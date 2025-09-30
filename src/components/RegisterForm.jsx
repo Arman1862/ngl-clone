@@ -15,30 +15,37 @@ export default function RegisterForm() {
 
     const formData = new FormData();
     formData.append('action', 'register');
-    formData.append('userId', userId);
-    formData.append('displayName', displayName);
+    formData.append('userId', userId.trim()); 
+    // GANTI 'displayName' menjadi 'namaTampilan' agar sesuai dengan e.parameter.namaTampilan di code.gs
+    formData.append('namaTampilan', displayName.trim()); 
 
     try {
       const response = await fetch(ANONYMOUS_API_URL, { 
         method: 'POST', 
         body: formData 
       });
-      const result = await response.json();
 
-      if (response.ok && result.status === 'success') {
+      // Response harus dibaca sebagai JSON
+      const result = await response.json(); 
+
+      // Perhatikan, jika di code.gs kamu mengembalikan 'result', gunakan 'result' di sini
+      if (response.ok && result.result === 'success') {
         Swal.fire({
-          title: 'Success!',
-          text: 'Registration successful. Please login.',
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
+          title: "Registrasi Berhasil!",
+          html: `Akunmu (@${result.data.userId}) berhasil dibuat.<br> 
+                 <p class="text-danger fw-bold mt-2">SIMPAN KUNCI RAHASIA INI:</p>
+                 <code class="d-inline-block p-2 rounded bg-light text-dark">${result.data.loginKey}</code>`,
+          icon: "success",
+          confirmButtonText: "Mengerti, Lanjut Login"
         }).then(() => {
           navigate('/login');
         });
       } else {
-        Swal.fire('Registration Failed', result.message || 'That User ID might already be taken.', 'error');
+        // Tampilkan pesan error dari backend
+        const errorText = result.message || 'Gagal! Cek log Apps Script untuk detailnya.'; 
+        Swal.fire('Gagal!', errorText, 'error');
       }
-    } catch (error) {
+    }catch (error) {
       console.error('Registration error:', error);
       Swal.fire('Error', 'An error occurred during registration.', 'error');
     } finally {
