@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Person } from "react-bootstrap-icons";
-
-const ANONYMOUS_API_URL = "https://script.google.com/macros/s/AKfycbx05SoPrXdvVU5KH0vl2qcHXgjKTzhZOQZg4s732RmJ5UmUvFq8sedCtSludVOVjs7tyw/exec";
+import { ANONYMOUS_API_URL } from '../config/api';
 
 export default function TampilPesanAnonim({ refreshTrigger }) {
   const [pesanAnonim, setPesanAnonim] = useState([]);
@@ -9,13 +8,40 @@ export default function TampilPesanAnonim({ refreshTrigger }) {
 
   const fetchPesanAnonim = async () => {
     setIsLoading(true);
+    
+    // 1. Ambil data otentikasi dari LocalStorage
+    const userAuth = JSON.parse(localStorage.getItem('userAuth'));
+    
+    // 2. Lakukan pengecekan. Jika userAuth tidak ada, hentikan proses.
+    if (!userAuth || !userAuth.userId || !userAuth.loginKey) {
+        console.error("User not authenticated.");
+        setIsLoading(false);
+        // Mungkin kamu perlu redirect ke halaman login di sini jika tidak ada auth
+        return; 
+    }
+
+    // 3. Buat URL dengan query parameter action=login dan data user
+    const fetchUrl = `${ANONYMOUS_API_URL}?action=login&userId=${encodeURIComponent(userAuth.userId)}&loginKey=${encodeURIComponent(userAuth.loginKey)}`;
+
     try {
-      const response = await fetch(ANONYMOUS_API_URL);
-      if (!response.ok) throw new Error('Failed to fetch data.');
+      // Menggunakan GET
+      const response = await fetch(fetchUrl, { method: 'GET' });
+      
+      if (!response.ok) throw new Error('Gagal mengambil data dari server.');
+      
       const data = await response.json();
-      setPesanAnonim(data.reverse());
+      
+      // 4. PERBAIKI: Cek result dan ambil array pesan dari data.messages
+      if (data.result === 'success' && data.messages) {
+          // data.messages.reverse() untuk menampilkan pesan terbaru di atas
+          setPesanAnonim(data.messages.reverse()); 
+      } else {
+          console.error('Fetch gagal:', data.message || 'Respons tidak valid.');
+          setPesanAnonim([]); // Kosongkan jika gagal
+      }
+
     } catch (error) {
-      console.error('Failed to fetch messages:', error);
+      console.error('Gagal mengambil pesan:', error);
     } finally {
       setIsLoading(false);
     }
