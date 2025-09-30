@@ -1,0 +1,103 @@
+
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+
+const ANONYMOUS_API_URL = "https://script.google.com/macros/s/AKfycbx05SoPrXdvVU5KH0vl2qcHXgjKTzhZOQZg4s732RmJ5UmUvFq8sedCtSludVOVjs7tyw/exec";
+
+export default function KirimPesanAnonim({ onPesanTerkirim }) {
+  const [pesan, setPesan] = useState('');
+  const [pengirim, setPengirim] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append('pesan', pesan);
+    formData.append('pengirim', pengirim.trim() === '' ? 'Anonim' : pengirim.trim());
+
+    try {
+      const response = await fetch(ANONYMOUS_API_URL, {
+        method: 'POST',
+        redirect: 'follow',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.result === 'success') {
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Pesanmu sudah terkirim.",
+          icon: "success",
+        });
+        setPesan('');
+        setPengirim('');
+        if (onPesanTerkirim) onPesanTerkirim();
+      } else {
+        Swal.fire({
+          title: "Gagal!",
+          text: "Terjadi kesalahan saat mengirim pesan. Coba lagi ya.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+      Swal.fire({
+        title: "Error!",
+        text: "Terjadi kesalahan koneksi.",
+        icon: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="container">
+      <div className="card glass-box p-4 mx-auto" style={{ maxWidth: '400px' }}>
+        <h3 className="card-title text-center text-white">Kirim Pesan Anonim</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control form-glass-input"
+              placeholder="Nama (opsional)"
+              value={pengirim}
+              onChange={(e) => setPengirim(e.target.value)}
+              disabled={isLoading}
+              name="pengirim"
+            />
+          </div>
+          <div className="mb-3">
+            <textarea
+              className="form-control form-glass-input"
+              rows="3"
+              placeholder="Ketik pesanmu di sini..."
+              value={pesan}
+              onChange={(e) => setPesan(e.target.value)}
+              required
+              disabled={isLoading}
+              name="pesan"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="btn btn-primary w-100 glass-box py-2"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                {' '}Mengirim...
+              </>
+            ) : (
+              'Kirim Pesan'
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
