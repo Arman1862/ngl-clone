@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-
-const ANONYMOUS_API_URL = "https://script.google.com/macros/s/AKfycbx05SoPrXdvVU5KH0vl2qcHXgjKTzhZOQZg4s732RmJ5UmUvFq8sedCtSludVOVjs7tyw/exec";
+import { ANONYMOUS_API_URL } from '../config/api'; 
 
 export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
   const [pesan, setPesan] = useState('');
@@ -13,6 +12,7 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
     setIsLoading(true);
 
     const formData = new FormData();
+    formData.append('action', 'send'); 
     formData.append('pesan', pesan);
     formData.append('pengirim', pengirim.trim() === '' ? 'Anonim' : pengirim.trim());
     if (recipientId) {
