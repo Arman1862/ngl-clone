@@ -16,7 +16,7 @@ export default function Home() {
         {/* Ikon dan Judul */}
         <PersonCircle className="text-red-400 text-6xl mx-auto mb-4" /> 
         <h1 className="text-4xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
-          NGELIK.
+          YTTA Aja
         </h1>
         <p className="text-md mb-8 text-gray-400">
           Kirim dan terima pesan rahasia tanpa nama.
