@@ -17,7 +17,7 @@ export default function Home() {
         {/* Ikon dan Judul */}
         <PersonCircle className="text-fuchsia-400 text-6xl mx-auto mb-4" />
         <h1 className="text-4xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-fuchsia-400 uppercase tracking-widest">
-          NGL Remake
+          YTTA aja
         </h1>
         <p className="text-md mb-8 text-gray-400">
           Kirim dan terima pesan rahasia tanpa nama.
