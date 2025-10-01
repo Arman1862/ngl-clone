@@ -1,0 +1,37 @@
+/*
+  ==========================================
+  TAMBAHAN CSS KUSTOM UNTUK EFEK NEON/BLOB
+  ==========================================
+*/
+
+/* 1. Keyframes untuk efek blob background */
+@keyframes blob {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      /* Pindah sedikit ke kanan atas, membesar */
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      /* Pindah sedikit ke kiri bawah, mengecil */
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+  
+  /* 2. Custom class untuk drop shadow yang menyerupai neon glow pada ikon */
+  .drop-shadow-neon {
+    /* Menggunakan gabungan warna biru dan fuchsia untuk glow */
+    filter: drop-shadow(0 0 5px rgba(232, 62, 140, 0.7)) 
+            drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+  }
+  
+  /* 3. Utility untuk custom animation delay (diperlukan untuk Tailwind yang belum mendukung custom delay) */
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  /* 4. Mengaktifkan animasi blob */
+  .animate-blob {
+    animation: blob 7s infinite alternate;
+  }
