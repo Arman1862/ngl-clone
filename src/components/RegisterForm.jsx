@@ -17,7 +17,6 @@ export default function RegisterForm() {
     const formData = new FormData();
     formData.append('action', 'register');
     formData.append('userId', userId.trim()); 
-    // GANTI 'displayName' menjadi 'namaTampilan' agar sesuai dengan e.parameter.namaTampilan di code.gs
     formData.append('namaTampilan', displayName.trim()); 
 
     try {
@@ -26,29 +25,65 @@ export default function RegisterForm() {
         body: formData 
       });
 
-      // Response harus dibaca sebagai JSON
       const result = await response.json(); 
 
-      // Perhatikan, jika di code.gs kamu mengembalikan 'result', gunakan 'result' di sini
-      if (response.ok && result.result === 'success') {
+      if (response.ok && result.result === 'success' && result.data.loginKey) {
+        const loginKey = result.data.loginKey;
+
         Swal.fire({
           title: "Registrasi Berhasil!",
-          html: `Akunmu (@${result.data.userId}) berhasil dibuat.<br> 
-                 <p class="text-danger fw-bold mt-2">SIMPAN KUNCI RAHASIA INI:</p>
-                 <code class="d-inline-block p-2 rounded bg-light text-dark">${result.data.loginKey}</code>`,
           icon: "success",
-          confirmButtonText: "Mengerti, Lanjut Login"
+          html: `
+            <div class="text-left text-white my-4">
+                <p>Akunmu (@${result.data.userId}) berhasil dibuat.</p>
+                <p class="font-bold mt-3 mb-2">SIMPAN KUNCI RAHASIA INI:</p>
+                <div class="flex items-center bg-gray-800 p-3 rounded-lg">
+                    <code class="flex-grow text-yellow-300 font-mono">${loginKey}</code>
+                    <button id="copy-key-btn" class="ml-4 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+                    Copy
+                    </button>
+                </div>
+            </div>
+          `,
+          confirmButtonText: "Mengerti, Lanjut Login",
+          background: '#1e293b',
+          color: '#ffffff',
+          didOpen: () => {
+            const copyBtn = document.getElementById('copy-key-btn');
+            if (copyBtn) {
+              copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(loginKey).then(() => {
+                  copyBtn.textContent = 'Copied!';
+                  copyBtn.disabled = true;
+                }).catch(err => {
+                  console.error('Failed to copy key:', err);
+                  copyBtn.textContent = 'Failed!';
+                });
+              });
+            }
+          }
         }).then(() => {
           navigate('/login');
         });
       } else {
-        // Tampilkan pesan error dari backend
         const errorText = result.message || 'Gagal! Cek log Apps Script untuk detailnya.'; 
-        Swal.fire('Gagal!', errorText, 'error');
+        Swal.fire({
+            title: 'Gagal!', 
+            text: errorText, 
+            icon: 'error',
+            background: '#1e293b',
+            color: '#ffffff'
+        });
       }
-    }catch (error) {
+    } catch (error) {
       console.error('Registration error:', error);
-      Swal.fire('Error', 'An error occurred during registration.', 'error');
+      Swal.fire({
+          title: 'Error', 
+          text: 'An error occurred during registration.', 
+          icon: 'error',
+          background: '#1e293b',
+          color: '#ffffff'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -57,11 +92,9 @@ export default function RegisterForm() {
   return (
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect: Blob Neon (sama seperti Home) */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
 
-      {/* Main Card */}
       <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-blue-500/30 rounded-3xl shadow-lg shadow-blue-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-blue-500/20">
         <PersonAdd className="text-blue-400 text-5xl mx-auto mb-4" />
         <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-fuchsia-400">
