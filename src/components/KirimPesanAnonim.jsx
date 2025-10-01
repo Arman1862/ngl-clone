@@ -54,18 +54,18 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
     // Wrapper Utama (Body style Neon Glassy)
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect: Blob Neon (sama seperti Home/Login) */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+      {/* Background Effect: Blob Neon (Ubah ke Red/Orange) */}
+      <div className="absolute top-0 left-0 w-80 h-80 bg-red-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
 
-      {/* Main Card (Glassy Style) */}
-      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-fuchsia-500/30 rounded-3xl shadow-lg shadow-fuchsia-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-fuchsia-500/20">
+      {/* Main Card (Glassy Style) - Border dan Shadow Merah */}
+      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
         
         {/* KONTEN BERGANTUNG PADA STATUS PESAN TERKIRIM */}
         {isSent ? (
           // Tampilan Sukses Terkirim
           <div className="text-center py-8">
-            <h3 className="text-4xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-fuchsia-400">
+            <h3 className="text-4xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
               Pesan Terkirim!
             </h3>
             <p className="text-lg text-gray-300 mb-8">
@@ -73,27 +73,27 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
             </p>
             <button
               onClick={handleSendAgain}
-              // Style tombol Gradient utama
+              // Style tombol Gradient utama (Merah-Orange)
               className="w-full px-6 py-3 font-bold rounded-xl 
-                         bg-gradient-to-r from-blue-600 to-fuchsia-600 
+                         bg-gradient-to-r from-red-600 to-orange-600 
                          text-white 
-                         shadow-md shadow-blue-500/30 
-                         hover:from-blue-500 hover:to-fuchsia-500 
-                         hover:shadow-lg hover:shadow-blue-500/50
+                         shadow-md shadow-red-500/30 
+                         hover:from-red-500 hover:to-orange-500 
+                         hover:shadow-lg hover:shadow-red-500/50
                          transition duration-300 transform hover:scale-[1.02] 
                          uppercase tracking-wider"
             >
               Kirim Pesan Lagi
             </button>
-            <a href="/" className="block mt-4 text-sm text-fuchsia-400 hover:text-blue-400 transition-colors">
+            <a href="/" className="block mt-4 text-sm text-red-400 hover:text-orange-400 transition-colors">
               Kembali ke Beranda
             </a>
           </div>
         ) : (
           // Tampilan Form Kirim Pesan
           <>
-            <Envelope className="text-fuchsia-400 text-5xl mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-blue-400">
+            <Envelope className="text-red-400 text-5xl mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
               Kirim Pesan Anonim
             </h2>
             <p className="text-center text-gray-300 mb-6">
@@ -105,8 +105,8 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
                 <input
                   type="text"
                   id="pengirim"
-                  // Style input Glassy/Neon
-                  className="w-full px-4 py-3 border rounded-xl bg-white/10 border-fuchsia-500/20 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  // Style input Border Merah, Fokus Orange
+                  className="w-full px-4 py-3 border rounded-xl bg-white/10 border-red-500/20 text-white placeholder-gray-400 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
                   placeholder="Contoh: Secret Admirer / Kosongin"
                   value={pengirim}
                   onChange={(e) => setPengirim(e.target.value)}
@@ -118,8 +118,8 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
                 <label htmlFor="pesan" className="block text-sm font-medium mb-2 text-gray-300">Pesan Anonim</label>
                 <textarea
                   id="pesan"
-                  // Style input Glassy/Neon
-                  className="w-full px-4 py-3 border rounded-xl bg-white/10 border-fuchsia-500/20 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  // Style input Border Orange, Fokus Merah
+                  className="w-full px-4 py-3 border rounded-xl bg-white/10 border-orange-500/20 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                   rows="4"
                   placeholder="Tulis pesan rahasia kamu di sini..."
                   value={pesan}
@@ -131,13 +131,13 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
               </div>
               <button
                 type="submit"
-                // Style tombol Gradient utama
+                // Style tombol Gradient utama (Merah-Orange)
                 className="w-full px-6 py-3 font-bold rounded-xl 
-                           bg-gradient-to-r from-fuchsia-600 to-blue-600 
+                           bg-gradient-to-r from-red-600 to-orange-600 
                            text-white 
-                           shadow-md shadow-fuchsia-500/30 
-                           hover:from-fuchsia-500 hover:to-blue-500 
-                           hover:shadow-lg hover:shadow-fuchsia-500/50
+                           shadow-md shadow-red-500/30 
+                           hover:from-red-500 hover:to-orange-500 
+                           hover:shadow-lg hover:shadow-red-500/50
                            transition duration-300 transform hover:scale-[1.02] 
                            uppercase tracking-wider"
                 disabled={isLoading}

@@ -54,6 +54,7 @@ export default function TampilPesanAnonim({ refreshTrigger, onSelectPesan }) {
   }, [refreshTrigger]);
 
   return (
+    // HILANGKAN WRAPPER CARD DARI SINI
     <div className="w-full">
       <div className="max-h-[50vh] overflow-y-auto pr-2">
         {isLoading ? (
@@ -62,29 +63,32 @@ export default function TampilPesanAnonim({ refreshTrigger, onSelectPesan }) {
           </div>
         ) : (
           pesanAnonim.length > 0 ? (
-            pesanAnonim.map((pesan, i) => { // <-- BUKA DENGAN KURUNG KURAWAL
-              // Deklarasi variabel di sini sudah benar
+            pesanAnonim.map((pesan, i) => { 
               const nomorPesan = pesanAnonim.length - i; 
 
-              return ( // <-- JANGAN LUPA RETURN ELEMEN JSX
+              return ( 
                 <div 
                   key={i} 
-                  className="p-3 my-3 rounded-xl bg-white/10 border border-white/5 shadow-lg flex items-start space-x-3 transition-all duration-300 hover:bg-white/15 cursor-pointer"
-                  onClick={() => onSelectPesan(pesan)} // <-- PENTING: Kirim data pesan saat diklik
+                  // Border Orange, Shadow Merah, Hover Orange
+                  className="p-3 my-3 rounded-xl bg-white/10 border border-orange-500/10 shadow-lg shadow-red-500/5 flex items-start space-x-3 transition-all duration-300 hover:bg-white/15 cursor-pointer"
+                  onClick={() => onSelectPesan(pesan)} 
                 >
-                  <Person className="text-white/80 text-xl flex-shrink-0 mt-1" />
+                  {/* Ikon Orange */}
+                  <Person className="text-orange-400 text-xl flex-shrink-0 mt-1" />
                   <div className="flex-grow text-left">
-                    {/* Tampilkan sebagai Pesan Rahasia [nomor] */}
-                    <p className="mb-1 text-base text-white font-bold">Pesan Rahasia #{nomorPesan}</p>
+                    {/* Judul Merah */}
+                    <p className="mb-1 text-base text-red-400 font-bold">Pesan Rahasia #{nomorPesan}</p>
                     <small className="text-white/50 text-xs">
                       dari **{pesan.Pengirim}** • {new Date(pesan.Tanggal).toLocaleString()}
                     </small>
                   </div>
                 </div>
-              ); // <-- TUTUP RETURN
-            }) // <-- TUTUP FUNGSI MAP
+              ); 
+            })
           ) : (
-            <p className="text-center text-white/50 py-10">Belum ada pesan anonim yang masuk.</p>
+            <div className="text-center text-gray-500 py-10">
+              <p>Belum ada pesan anonim. Bagikan linkmu!</p>
+            </div>
           )
         )}
       </div>

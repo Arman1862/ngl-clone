@@ -37,17 +37,18 @@ export default function RegisterForm() {
             <div class="text-left text-white my-4">
                 <p>Akunmu (@${result.data.userId}) berhasil dibuat.</p>
                 <p class="font-bold mt-3 mb-2">SIMPAN KUNCI RAHASIA INI:</p>
-                <div class="flex items-center bg-gray-800 p-3 rounded-lg">
-                    <code class="flex-grow text-yellow-300 font-mono">${loginKey}</code>
-                    <button id="copy-key-btn" class="ml-4 px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+                <div class="flex items-center bg-gray-900 p-3 rounded-lg">
+                    <code class="flex-grow text-orange-cyber font-mono">${loginKey}</code>
+                    <button id="copy-key-btn" class="ml-4 px-3 py-1 rounded-lg bg-red-neon hover:opacity-80 text-white font-semibold">
                     Copy
                     </button>
                 </div>
             </div>
           `,
           confirmButtonText: "Mengerti, Lanjut Login",
-          background: '#1e293b',
+          background: '#0A0A0A',
           color: '#ffffff',
+          confirmButtonColor: '#FF3366',
           didOpen: () => {
             const copyBtn = document.getElementById('copy-key-btn');
             if (copyBtn) {
@@ -71,8 +72,9 @@ export default function RegisterForm() {
             title: 'Gagal!', 
             text: errorText, 
             icon: 'error',
-            background: '#1e293b',
-            color: '#ffffff'
+            background: '#0A0A0A',
+            color: '#ffffff',
+            confirmButtonColor: '#FF3366'
         });
       }
     } catch (error) {
@@ -81,8 +83,9 @@ export default function RegisterForm() {
           title: 'Error', 
           text: 'An error occurred during registration.', 
           icon: 'error',
-          background: '#1e293b',
-          color: '#ffffff'
+          background: '#0A0A0A',
+          color: '#ffffff',
+          confirmButtonColor: '#FF3366'
       });
     } finally {
       setIsLoading(false);
@@ -90,36 +93,43 @@ export default function RegisterForm() {
   };
 
   return (
+    // Container: Background gelap
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+      {/* Background Effect (Opsional, jika kamu mau tambahkan blob di sini) */}
 
-      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-blue-500/30 rounded-3xl shadow-lg shadow-blue-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-blue-500/20">
-        <PersonAdd className="text-blue-400 text-5xl mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-fuchsia-400">
-          Buat Akun Baru
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300">User ID (@username)</label>
+      {/* Main Card: Glassy, Border Merah, Shadow Merah */}
+      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
+        
+        {/* Header */}
+        <PersonAdd className="text-red-400 text-5xl mx-auto mb-4" /> {/* Ikon Merah */}
+        <h1 className="text-3xl text-center font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
+          Register
+        </h1>
+
+        <form onSubmit={handleSubmit}>
+          {/* Input User ID: Border Merah, Fokus Orange */}
+          <div className="mb-4">
+            <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300 text-left">User ID</label>
             <input
               type="text"
               id="userId"
-              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-blue-500/20 text-white placeholder-gray-400 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all duration-300"
-              placeholder="Pilih User ID unik"
+              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-red-500/20 text-white placeholder-gray-400 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
+              placeholder="User ID unik (tanpa spasi)"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               required
               disabled={isLoading}
             />
           </div>
-          <div>
-            <label htmlFor="displayName" className="block text-sm font-medium mb-2 text-gray-300">Nama Tampilan</label>
+          
+          {/* Input Display Name: Border Orange, Fokus Merah */}
+          <div className="mb-6">
+            <label htmlFor="displayName" className="block text-sm font-medium mb-2 text-gray-300 text-left">Nama Tampilan</label>
             <input
               type="text"
               id="displayName"
-              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-blue-500/20 text-white placeholder-gray-400 focus:ring-fuchsia-500 focus:border-fuchsia-500 transition-all duration-300"
+              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-orange-500/20 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
               placeholder="Nama kamu di profil"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
@@ -127,14 +137,16 @@ export default function RegisterForm() {
               disabled={isLoading}
             />
           </div>
+          
+          {/* Tombol Submit: Gradient Merah-Orange */}
           <button
             type="submit"
             className="w-full px-6 py-3 font-bold rounded-xl 
-                       bg-gradient-to-r from-fuchsia-600 to-blue-600 
+                       bg-gradient-to-r from-red-600 to-orange-600 
                        text-white 
-                       shadow-md shadow-fuchsia-500/30 
-                       hover:from-fuchsia-500 hover:to-blue-500 
-                       hover:shadow-lg hover:shadow-fuchsia-500/50
+                       shadow-md shadow-red-500/30 
+                       hover:from-red-500 hover:to-orange-500 
+                       hover:shadow-lg hover:shadow-red-500/50
                        transition duration-300 transform hover:scale-[1.02] 
                        uppercase tracking-wider"
             disabled={isLoading}
@@ -142,11 +154,11 @@ export default function RegisterForm() {
             {isLoading ? 'Registering...' : 'Register'}
           </button>
         </form>
+        
         <p className="text-center mt-6 text-sm text-gray-400">
           Sudah punya akun?{" "}
-          <Link to="/login" className="text-blue-400 hover:text-fuchsia-400 font-semibold transition duration-200">
-            Login
-          </Link>
+          {/* Link Merah */}
+          <Link to="/login" className="text-red-400 hover:text-red-300 font-semibold">Login di sini</Link>
         </p>
       </div>
     </div>

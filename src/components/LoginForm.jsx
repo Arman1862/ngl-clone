@@ -43,6 +43,8 @@ export default function LoginForm() {
           icon: "success",
           timer: 1500,
           showConfirmButton: false,
+          background: '#0A0A0A',
+          color: '#ffffff'
         }).then(() => {
           navigate("/dashboard"); // Redirect ke dashboard setelah login
         });
@@ -50,35 +52,52 @@ export default function LoginForm() {
         // Handle error dari backend (misal: 'Invalid credentials')
         const errorText =
           result.message || "Login gagal. Cek User ID dan Kunci Rahasiamu.";
-        Swal.fire("Gagal!", errorText, "error");
+        Swal.fire({
+          title: "Gagal!",
+          text: errorText,
+          icon: "error",
+          background: '#0A0A0A',
+          color: '#ffffff',
+          confirmButtonColor: '#FF3366'
+        });
       }
     } catch (error) {
       console.error("Fetch error:", error);
-      Swal.fire("Error!", "Koneksi gagal. Cek jaringan atau URL API.", "error");
+      Swal.fire({
+        title: "Error!",
+        text: "Koneksi gagal. Cek jaringan atau URL API.",
+        icon: "error",
+        background: '#0A0A0A',
+        color: '#ffffff',
+        confirmButtonColor: '#FF3366'
+      });
     } finally {
       setIsLoading(false);
     }
   };
   return (
+    // Container: Background gelap
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect: Blob Neon (sama seperti Home) */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+      {/* Background Effect (Opsional, jika kamu mau tambahkan blob di sini) */}
 
-      {/* Main Card */}
-      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-fuchsia-500/30 rounded-3xl shadow-lg shadow-fuchsia-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-fuchsia-500/20">
-        <Lock className="text-fuchsia-400 text-5xl mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-blue-400">
-          Login ke Akun
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300">User ID</label>
+      {/* Main Card: Glassy, Border Merah, Shadow Merah */}
+      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
+        
+        {/* Header */}
+        <Lock className="text-orange-400 text-5xl mx-auto mb-4" /> {/* Ikon Orange */}
+        <h1 className="text-3xl text-center font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
+          Login
+        </h1>
+
+        <form onSubmit={handleSubmit}>
+          {/* Input User ID: Border Merah, Fokus Orange */}
+          <div className="mb-4">
+            <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300 text-left">User ID</label>
             <input
               type="text"
               id="userId"
-              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-fuchsia-500/20 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-red-500/20 text-white placeholder-gray-400 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
               placeholder="Masukkan User ID kamu"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
@@ -86,12 +105,14 @@ export default function LoginForm() {
               disabled={isLoading}
             />
           </div>
-          <div>
-            <label htmlFor="loginKey" className="block text-sm font-medium mb-2 text-gray-300">Login Key</label>
+          
+          {/* Input Login Key: Border Orange, Fokus Merah */}
+          <div className="mb-6">
+            <label htmlFor="loginKey" className="block text-sm font-medium mb-2 text-gray-300 text-left">Kunci Rahasia</label>
             <input
               type="password"
               id="loginKey"
-              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-fuchsia-500/20 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+              className="w-full px-4 py-3 border rounded-xl bg-white/10 border-orange-500/20 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
               placeholder="Masukkan kunci rahasia"
               value={loginKey}
               onChange={(e) => setLoginKey(e.target.value)}
@@ -99,14 +120,16 @@ export default function LoginForm() {
               disabled={isLoading}
             />
           </div>
+          
+          {/* Tombol Submit: Gradient Merah-Orange */}
           <button
             type="submit"
             className="w-full px-6 py-3 font-bold rounded-xl 
-                       bg-gradient-to-r from-blue-600 to-fuchsia-600 
+                       bg-gradient-to-r from-red-600 to-orange-600 
                        text-white 
-                       shadow-md shadow-blue-500/30 
-                       hover:from-blue-500 hover:to-fuchsia-500 
-                       hover:shadow-lg hover:shadow-blue-500/50
+                       shadow-md shadow-red-500/30 
+                       hover:from-red-500 hover:to-orange-500 
+                       hover:shadow-lg hover:shadow-red-500/50
                        transition duration-300 transform hover:scale-[1.02] 
                        uppercase tracking-wider"
             disabled={isLoading}
@@ -114,11 +137,11 @@ export default function LoginForm() {
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+        
         <p className="text-center mt-6 text-sm text-gray-400">
           Belum punya akun?{" "}
-          <Link to="/register" className="text-fuchsia-400 hover:text-blue-400 font-semibold transition duration-200">
-            Register Akun Baru
-          </Link>
+          {/* Link Merah */}
+          <Link to="/register" className="text-red-400 hover:text-red-300 font-semibold">Register di sini</Link>
         </p>
       </div>
     </div>

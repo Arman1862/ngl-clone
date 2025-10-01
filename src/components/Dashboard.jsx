@@ -34,44 +34,31 @@ const MessageModal = ({ pesan, onClose }) => {
 
 
   return (
-    // Overlay fixed, dark transparent, dan BLUR di belakangnya
-    // Transisi opacity di sini untuk efek fade overlay
+    // Backdrop: Transparan dengan blur
     <div 
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-      // Menutup modal jika klik di luar box pesan
+      className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
       onClick={handleClose}
     >
-      
-      {/* Message Card: Glassy/Neon Style, lebih fokus dan keren */}
+      {/* Modal Card: Border Merah, Shadow Merah */}
       <div 
-        // Hentikan propagasi klik agar klik di dalam modal tidak menutup modal
-        onClick={(e) => e.stopPropagation()} 
-        className={`bg-white/10 backdrop-blur-xl border border-fuchsia-500/30 rounded-3xl shadow-lg shadow-fuchsia-500/20 p-8 w-full max-w-sm mx-auto relative 
-                  transition-all duration-300 ease-out 
-                  ${isVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`} // <-- ANIMASI SCALE-UP/FADE-IN DI SINI
+        className={`bg-white/10 border border-red-500/30 rounded-2xl shadow-xl shadow-red-500/20 p-6 w-full max-w-sm transform transition-all duration-300 ${isVisible ? 'scale-100' : 'scale-90'}`}
+        onClick={e => e.stopPropagation()} // Mencegah klik di dalam card menutup modal
       >
-        
-        {/* Tombol Close */}
-        <X 
-          className="absolute top-4 right-4 text-white text-3xl cursor-pointer hover:text-fuchsia-400 transition-colors"
-          onClick={handleClose} // <-- Gunakan handleClose yang baru
-        />
-
-        {/* Header */}
-        <h2 className="text-xl font-bold mb-4 text-fuchsia-400 text-center">Isi Pesan Rahasia</h2>
-        
-        {/* Box Pesan */}
-        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
-          <p className="text-xl text-white font-semibold break-words whitespace-pre-wrap">
-            {pesan.Pesan}
-          </p>
+        <div className="flex justify-between items-start mb-4">
+          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+            Pesan Rahasia #{pesan.nomorPesan}
+          </h3>
+          <button onClick={handleClose} className="text-red-400 hover:text-white transition-colors">
+            <X className="text-2xl" />
+          </button>
         </div>
-
-        {/* Footer/Meta */}
-        <small className="block mt-4 text-center text-gray-400 text-xs">
-            Dikirim oleh **{pesan.Pengirim}** pada {new Date(pesan.Tanggal).toLocaleString()}
-        </small>
         
+        <p className="text-gray-300 mb-6 whitespace-pre-wrap">{pesan.Pesan}</p>
+
+        <div className="text-sm text-gray-400 border-t border-red-500/30 pt-4">
+          <p>Dari: <span className="font-semibold text-orange-400">{pesan.Pengirim}</span></p>
+          <p>Dikirim: {new Date(pesan.Tanggal).toLocaleString()}</p>
+        </div>
       </div>
     </div>
   );
@@ -81,11 +68,10 @@ const MessageModal = ({ pesan, onClose }) => {
 
 export default function Dashboard() {
   const [userAuth, setUserAuth] = useState(null);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-  const [selectedPesan, setSelectedPesan] = useState(null); // State baru untuk pesan yang difokuskan
+  const [refreshTrigger, setRefreshTrigger] = useState(0); 
+  const [selectedPesan, setSelectedPesan] = useState(null); // State untuk modal
   const navigate = useNavigate();
 
-  // ... (useEffect dan fungsi handleCopyLink, handleLogout tetap sama)
   useEffect(() => {
     const storedData = localStorage.getItem('userAuth');
     if (storedData) {
@@ -95,20 +81,11 @@ export default function Dashboard() {
     }
   }, [navigate]);
 
-  // Handler untuk mengaktifkan mode fokus
-  const handleSelectPesan = (pesan) => {
-    setSelectedPesan(pesan);
-  };
-  
-  // Handler untuk menutup mode fokus
-  const handleCloseFocus = () => {
-    setSelectedPesan(null);
-  };
-  
   const handleCopyLink = () => {
     if (userAuth && userAuth.userId) {
       const shareLink = `${window.location.origin}/send/${userAuth.userId}`; 
       navigator.clipboard.writeText(shareLink).then(() => {
+        // Swal sudah menggunakan customClass di Register/Login, jadi kita pastikan sama.
         Swal.fire({
           title: 'Link Berhasil Disalin!',
           text: `Bagikan link: ${shareLink}`,
@@ -121,86 +98,98 @@ export default function Dashboard() {
         });
       }).catch(err => {
         console.error('Failed to copy:', err);
-        Swal.fire('Oops!', 'Gagal menyalin link.', 'error');
+        Swal.fire('Oops!', 'Failed to copy the link.', 'error');
       });
     }
   };
 
+  const handleSelectPesan = (pesan) => {
+    setSelectedPesan(pesan);
+  };
+  
+  const handleCloseModal = () => {
+    setSelectedPesan(null);
+  };
+  
   const handleLogout = () => {
     localStorage.removeItem('userAuth');
   };
 
+
   if (!userAuth) {
     return <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center"><p>Loading...</p></div>;
   }
-  
+
   const shareLink = `${window.location.origin}/send/${userAuth.userId}`;
-  // ... (End of unchanged functions)
 
   return (
-    // Dashboard Utama
-    <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    // Body: Background gelap
+    <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect: Blob Neon */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-fuchsia-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div className="absolute bottom-0 right-0 w-80 h-80 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+      {/* Background Effect: Blob Neon (Ubah ke Red/Orange) */}
+      <div className="absolute top-0 left-0 w-80 h-80 bg-red-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
 
-      {/* MAIN CARD: Glassy Style */}
-      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-blue-500/30 rounded-3xl shadow-lg shadow-blue-500/10 p-8 w-full max-w-sm sm:max-w-md mx-auto my-8 text-center transition-all duration-500 hover:shadow-blue-500/20">
+      {/* Main Card */}
+      <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-lg mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
         
-        {/* Header Dashboard */}
-        <Mailbox2 className="text-blue-400 text-5xl mx-auto mb-4" />
-        <h1 className="text-3xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-blue-400 uppercase tracking-wider">
+        {/* Header */}
+        <Mailbox2 className="text-orange-400 text-5xl mx-auto mb-4" /> 
+        <h1 className="text-3xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
           Halo, {userAuth.namaTampilan}!
         </h1>
-        <p className="text-md mb-6 text-gray-400">
-          Cek pesan anonim dan bagikan linkmu.
-        </p>
-
-        {/* 1. CARD SHARE YOUR LINK */}
-        <div className="bg-white/10 backdrop-blur-md border border-fuchsia-500/30 rounded-xl shadow-lg shadow-fuchsia-500/10 p-4 mb-6 text-left transition-all duration-300 hover:shadow-fuchsia-500/20">
-          <h2 className="text-xl font-semibold mb-3 text-fuchsia-400">Bagikan Linkmu</h2>
-          <p className="text-gray-300 text-sm mb-3">Salin dan sebar link rahasia di bawah ini:</p>
+        
+        {/* 1. SHARE LINK CARD - Border Merah/Orange */}
+        <div className="bg-white/5 border border-orange-500/20 rounded-xl shadow-lg p-5 mb-8">
+          <h2 className="text-lg font-semibold mb-3 text-red-400">Bagikan Link Rahasiamu</h2>
+          <p className="text-slate-300 mb-4 text-sm">Orang lain bisa kirim pesan anonim lewat link ini:</p>
           <div className="flex flex-col sm:flex-row items-stretch space-y-3 sm:space-y-0 sm:space-x-3">
             <input
               type="text"
               readOnly
               value={shareLink}
-              className="w-full px-3 py-2 border rounded-lg bg-white/5 border-fuchsia-500/20 text-white placeholder-gray-400 text-sm flex-grow focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+              // Style input agar sama dengan di Register/Login
+              className="w-full px-3 py-2 border rounded-lg bg-white/5 border-red-500/20 text-white placeholder-gray-400 text-sm flex-grow focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
             />
             <button
               onClick={handleCopyLink}
-              className="w-full sm:w-auto px-4 py-2 font-semibold rounded-lg bg-fuchsia-600 hover:bg-fuchsia-700 transition duration-300 flex items-center justify-center text-sm"
+              // Style tombol Copy (Gradient Merah-Orange)
+              className="w-full sm:w-auto px-4 py-2 font-semibold rounded-lg 
+                         bg-gradient-to-r from-red-600 to-orange-600 
+                         text-white 
+                         shadow-md shadow-red-500/30 
+                         hover:from-red-500 hover:to-orange-500 
+                         transition duration-300 flex items-center justify-center text-sm"
             >
               <Clipboard className="mr-2 text-lg" />
-              Copy
+              Copy Link
             </button>
           </div>
         </div>
 
-        {/* 2. DAFTAR PESAN (TampilPesanAnonim) */}
+        {/* 2. DAFTAR PESAN (TampilPesanAnonim) - Header Merah */}
         <div className="text-left mb-6">
-             <h2 className="text-xl font-semibold mb-3 text-blue-400">Kotak Masuk Anonim</h2>
+             <h2 className="text-xl font-semibold mb-3 text-red-400">Kotak Masuk Anonim</h2>
              <TampilPesanAnonim 
                  refreshTrigger={refreshTrigger} 
                  onSelectPesan={handleSelectPesan} 
              />
         </div>
        
-        {/* Tombol Logout */}
+        {/* Tombol Logout - Teks Merah/Orange */}
         <div className="text-center mt-6">
             <Link 
                 to="/login" 
                 onClick={handleLogout}
-                className="text-sm text-slate-400 hover:text-fuchsia-400 font-semibold transition-colors"
+                className="text-sm text-gray-400 hover:text-red-400 font-semibold transition-colors"
             >
                 Logout
             </Link>
         </div>
       </div>
       
-      {/* RENDER MODAL BLUR JIKA ADA PESAN YANG DIPILIH */}
-      <MessageModal pesan={selectedPesan} onClose={handleCloseFocus} />
+      {/* Panggil Modal */}
+      <MessageModal pesan={selectedPesan} onClose={handleCloseModal} />
 
     </div>
   );
