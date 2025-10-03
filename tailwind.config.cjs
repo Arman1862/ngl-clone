@@ -1,50 +1,35 @@
-// tailwind.config.cjs
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        // --- PALET BARU: NEON MERAH/JINGGA ---
-        'deep-indigo': '#0A0A0A', // Background utama (lebih gelap/netral)
-        'red-neon': '#FF3366',    // Warna utama (Merah Neon/Rose)
-        'orange-cyber': '#FF9933', // Warna sekunder (Orange Terang)
-        'glass-border-main': '#F87171', // Border untuk efek glass (Merah Muda)
-        
-        // Warna-warna dasar yang dipakai Tailwind tetap bisa digunakan (red-600, yellow-500, dll.)
-        
-        // --- WARNA LAMA (BISA DIHAPUS JIKA TIDAK DIPAKAI LAGI) ---
-        // 'violet-neon': '#7E22CE', 
-        // 'blue-cyber': '#3B82F6', 
-        // 'glass-border-blue': '#60A5FA', 
-        'deep-orange': '#1A0E0B',
-        'orange-primary': '#DD6B20',
-        'orange-neon': '#F97316',
-        'amber-glow': '#FBBF24',
-        'glass-border-orange': '#F59E0B',
+        "deep-indigo": "#0A0A0A",
+        "red-neon": "#FF3366",
+        "orange-cyber": "#FF9933",
+        "glass-border-main": "#F87171",
+
+        "deep-orange": "#1A0E0B",
+        "orange-primary": "#DD6B20",
+        "orange-neon": "#F97316",
+        "amber-glow": "#FBBF24",
+        "glass-border-orange": "#F59E0B",
       },
       boxShadow: {
-        'neon-red': '0 0 10px #FF3366, 0 0 20px #FF3366',
-        'neon-orange': '0 0 10px #FF9933, 0 0 20px #FF9933',
-        // 'neon-blue': '0 0 10px #3B82F6, 0 0 20px #3B82F6',
-        // 'neon-violet': '0 0 10px #7E22CE, 0 0 20px #7E22CE',
+        "neon-red": "0 0 10px #FF3366, 0 0 20px #FF3366",
+        "neon-orange": "0 0 10px #FF9933, 0 0 20px #FF9933",
       },
       keyframes: {
         blob: {
-          // Asumsi kamu sudah punya keyframe blob, jika belum, tambahkan ini
-          '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-        }
+          "0%, 100%": { transform: "translate(0px, 0px) scale(1)" },
+          "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+          "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+        },
       },
       animation: {
-        // Asumsi kamu sudah punya animasi blob
-        'blob': 'blob 7s infinite',
-      }
+        blob: "blob 7s infinite",
+      },
     },
   },
   plugins: [],
-}
+};
