@@ -1,4 +1,4 @@
-# 💬 SecretWave: Anonymous Messaging App (React + Google Apps Script)
+# 💬 YTTA-AJA: Anonymous Messaging App (React + Google Apps Script)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Technology: React](https://img.shields.io/badge/Frontend-React%20%7C%20Vite-61DAFB?logo=react)](https://react.dev/)
