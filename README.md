@@ -72,6 +72,6 @@ This application uses a **Neon Cyberpunk** theme with a dominant color palette o
 
 ## 👨‍💻 Contributor
 
-This project was developed by **[Arman - Muhammad Arjuna Mahendratama]** while studying at SMKN 53 Jakarta.
+This project was developed by **Arman - Muhammad Arjuna Mahendratama** while studying at SMKN 53 Jakarta.
 
 > *Feedback and suggestions are highly appreciated!*
