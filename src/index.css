@@ -1,3 +1,2 @@
 @import "tailwindcss";
 
-/* All custom component styles have been moved directly into the JSX files using Tailwind utility classes. This file is now only for importing Tailwind's base styles. */

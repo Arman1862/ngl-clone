@@ -4,7 +4,7 @@ import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import KirimPesanAnonim from './components/KirimPesanAnonim';
 import Dashboard from './components/Dashboard';
-import Footer from './components/Footer'; // Import the Footer
+import Footer from './components/Footer';
 import './App.css'; 
 
 const SendMessagePage = () => {

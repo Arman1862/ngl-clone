@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { PersonAdd } from 'react-bootstrap-icons'; // Tambahkan ikon
-import { ANONYMOUS_API_URL } from '../config/api'; // Pastikan path benar
+import { PersonAdd } from 'react-bootstrap-icons';
+import { ANONYMOUS_API_URL } from '../config/api';
 
 export default function RegisterForm() {
   const [userId, setUserId] = useState('');
@@ -93,22 +93,17 @@ export default function RegisterForm() {
   };
 
   return (
-    // Container: Background gelap
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect (Opsional, jika kamu mau tambahkan blob di sini) */}
 
-      {/* Main Card: Glassy, Border Merah, Shadow Merah */}
       <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
         
-        {/* Header */}
-        <PersonAdd className="text-red-400 text-5xl mx-auto mb-4" /> {/* Ikon Merah */}
+        <PersonAdd className="text-red-400 text-5xl mx-auto mb-4" />
         <h1 className="text-3xl text-center font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
           Register
         </h1>
 
         <form onSubmit={handleSubmit}>
-          {/* Input User ID: Border Merah, Fokus Orange */}
           <div className="mb-4">
             <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300 text-left">User ID</label>
             <input
@@ -123,7 +118,6 @@ export default function RegisterForm() {
             />
           </div>
           
-          {/* Input Display Name: Border Orange, Fokus Merah */}
           <div className="mb-6">
             <label htmlFor="displayName" className="block text-sm font-medium mb-2 text-gray-300 text-left">Nama Tampilan</label>
             <input
@@ -138,7 +132,6 @@ export default function RegisterForm() {
             />
           </div>
           
-          {/* Tombol Submit: Gradient Merah-Orange */}
           <button
             type="submit"
             className="w-full px-6 py-3 font-bold rounded-xl 
@@ -157,7 +150,6 @@ export default function RegisterForm() {
         
         <p className="text-center mt-6 text-sm text-gray-400">
           Sudah punya akun?{" "}
-          {/* Link Merah */}
           <Link to="/login" className="text-red-400 hover:text-red-300 font-semibold">Login di sini</Link>
         </p>
       </div>

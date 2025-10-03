@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { ANONYMOUS_API_URL } from '../config/api'; 
-import { Envelope } from 'react-bootstrap-icons'; // Tambahkan ikon
+import { Envelope } from 'react-bootstrap-icons';
 
 export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
   const [pesan, setPesan] = useState('');
   const [pengirim, setPengirim] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSent, setIsSent] = useState(false); // State baru untuk cek pesan terkirim
+  const [isSent, setIsSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +16,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
     const formData = new FormData();
     formData.append('action', 'send'); 
     formData.append('pesan', pesan);
-    // Jika pengirim kosong, kirim 'Anonim'
     formData.append('pengirim', pengirim.trim() === '' ? 'Anonim' : pengirim.trim()); 
     if (recipientId) {
       formData.append('recipientId', recipientId);
@@ -27,11 +26,9 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
       const result = await response.json();
 
       if (response.ok && result.result === 'success') {
-        // Hapus Swal sukses. Kita ganti dengan perubahan UI (isSent = true)
         setIsSent(true); 
         if (onPesanTerkirim) onPesanTerkirim();
       } else {
-        // Tampilkan pesan error dari backend
         const errorText = result.message || 'Pesan gagal terkirim. Cek log Apps Script untuk detailnya.'; 
         Swal.fire('Gagal!', errorText, 'error');
       }
@@ -43,7 +40,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
     }
   };
 
-  // Fungsi untuk reset form dan kirim pesan lagi
   const handleSendAgain = () => {
     setIsSent(false);
     setPesan('');
@@ -51,19 +47,14 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
   };
 
   return (
-    // Wrapper Utama (Body style Neon Glassy)
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect: Blob Neon (Ubah ke Red/Orange) */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-red-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
 
-      {/* Main Card (Glassy Style) - Border dan Shadow Merah */}
       <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
         
-        {/* KONTEN BERGANTUNG PADA STATUS PESAN TERKIRIM */}
         {isSent ? (
-          // Tampilan Sukses Terkirim
           <div className="text-center py-8">
             <h3 className="text-4xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
               Pesan Terkirim!
@@ -73,7 +64,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
             </p>
             <button
               onClick={handleSendAgain}
-              // Style tombol Gradient utama (Merah-Orange)
               className="w-full px-6 py-3 font-bold rounded-xl 
                          bg-gradient-to-r from-red-600 to-orange-600 
                          text-white 
@@ -90,7 +80,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
             </a>
           </div>
         ) : (
-          // Tampilan Form Kirim Pesan
           <>
             <Envelope className="text-red-400 text-5xl mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
@@ -105,7 +94,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
                 <input
                   type="text"
                   id="pengirim"
-                  // Style input Border Merah, Fokus Orange
                   className="w-full px-4 py-3 border rounded-xl bg-white/10 border-red-500/20 text-white placeholder-gray-400 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300"
                   placeholder="Contoh: Secret Admirer / Kosongin"
                   value={pengirim}
@@ -118,7 +106,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
                 <label htmlFor="pesan" className="block text-sm font-medium mb-2 text-gray-300">Pesan Anonim</label>
                 <textarea
                   id="pesan"
-                  // Style input Border Orange, Fokus Merah
                   className="w-full px-4 py-3 border rounded-xl bg-white/10 border-orange-500/20 text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500 transition-all duration-300"
                   rows="4"
                   placeholder="Tulis pesan rahasia kamu di sini..."
@@ -131,7 +118,6 @@ export default function KirimPesanAnonim({ onPesanTerkirim, recipientId }) {
               </div>
               <button
                 type="submit"
-                // Style tombol Gradient utama (Merah-Orange)
                 className="w-full px-6 py-3 font-bold rounded-xl 
                            bg-gradient-to-r from-red-600 to-orange-600 
                            text-white 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Lock } from 'react-bootstrap-icons'; // Tambahkan ikon
-import { ANONYMOUS_API_URL } from '../config/api'; // Pastikan path benar
+import { Lock } from 'react-bootstrap-icons';
+import { ANONYMOUS_API_URL } from '../config/api';
 
 export default function LoginForm() {
   const [userId, setUserId] = useState('');
@@ -14,25 +14,19 @@ export default function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    // 1. MEMBUAT URL DENGAN QUERY PARAMETER YANG LENGKAP
-    // Menambahkan action=login dan memastikan userId/loginKey di-encode
     const loginUrl = `${ANONYMOUS_API_URL}?action=login&userId=${encodeURIComponent(
       userId.trim()
     )}&loginKey=${encodeURIComponent(loginKey.trim())}`;
 
     try {
-      // Login menggunakan GET
       const response = await fetch(loginUrl, { method: "GET" });
       const result = await response.json();
 
-      // 2. MEMPERBAIKI STATUS CHECK: Menggunakan result.result
       if (response.ok && result.result === "success") {
-        // Simpan data otentikasi ke LocalStorage
-        // Kita simpan userId, loginKey, dan namaTampilan untuk dipakai di TampilPesanAnonim
         const userAuthData = {
-          userId: result.profile.userId, // <-- Key Baru
+          userId: result.profile.userId,
           loginKey: loginKey.trim(),
-          namaTampilan: result.profile.namaTampilan, // <-- Key Baru
+          namaTampilan: result.profile.namaTampilan,
         };
 
         localStorage.setItem("userAuth", JSON.stringify(userAuthData));
@@ -46,10 +40,9 @@ export default function LoginForm() {
           background: '#0A0A0A',
           color: '#ffffff'
         }).then(() => {
-          navigate("/dashboard"); // Redirect ke dashboard setelah login
+          navigate("/dashboard");
         });
       } else {
-        // Handle error dari backend (misal: 'Invalid credentials')
         const errorText =
           result.message || "Login gagal. Cek User ID dan Kunci Rahasiamu.";
         Swal.fire({
@@ -76,22 +69,17 @@ export default function LoginForm() {
     }
   };
   return (
-    // Container: Background gelap
     <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Background Effect (Opsional, jika kamu mau tambahkan blob di sini) */}
 
-      {/* Main Card: Glassy, Border Merah, Shadow Merah */}
       <div className="relative z-10 bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-3xl shadow-lg shadow-red-500/10 p-8 w-full max-w-sm mx-auto my-8 transition-all duration-500 hover:shadow-red-500/20">
         
-        {/* Header */}
-        <Lock className="text-orange-400 text-5xl mx-auto mb-4" /> {/* Ikon Orange */}
+        <Lock className="text-orange-400 text-5xl mx-auto mb-4" />
         <h1 className="text-3xl text-center font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400 uppercase tracking-wider">
           Login
         </h1>
 
         <form onSubmit={handleSubmit}>
-          {/* Input User ID: Border Merah, Fokus Orange */}
           <div className="mb-4">
             <label htmlFor="userId" className="block text-sm font-medium mb-2 text-gray-300 text-left">User ID</label>
             <input
@@ -106,7 +94,6 @@ export default function LoginForm() {
             />
           </div>
           
-          {/* Input Login Key: Border Orange, Fokus Merah */}
           <div className="mb-6">
             <label htmlFor="loginKey" className="block text-sm font-medium mb-2 text-gray-300 text-left">Kunci Rahasia</label>
             <input
@@ -121,7 +108,6 @@ export default function LoginForm() {
             />
           </div>
           
-          {/* Tombol Submit: Gradient Merah-Orange */}
           <button
             type="submit"
             className="w-full px-6 py-3 font-bold rounded-xl 
@@ -140,7 +126,6 @@ export default function LoginForm() {
         
         <p className="text-center mt-6 text-sm text-gray-400">
           Belum punya akun?{" "}
-          {/* Link Merah */}
           <Link to="/register" className="text-red-400 hover:text-red-300 font-semibold">Register di sini</Link>
         </p>
       </div>
